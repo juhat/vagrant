@@ -19,6 +19,8 @@ Usage:
 
 #{command.full_name} add name uri
 #{command.full_name} remove name
+#{command.full_name} list
+#{command.full_name} remote
 
 Add and remove vagrant boxes.
 

@@ -108,7 +108,7 @@ module Vagrant
     # which action to take and calls the respective action method
     # (see {box_add} and {box_remove})
     def box(argv)
-      sub_commands = ["list", "add", "remove"]
+      sub_commands = ["list", "add", "remove", "remote"]
 
       if !sub_commands.include?(argv[0])
         error_and_exit(:command_box_invalid)
@@ -147,6 +147,19 @@ module Vagrant
       end
 
       box.destroy
+    end
+    
+    # List available remote base boxes 
+    def box_remote(env)
+      site = Net::HTTP.get(URI.parse('http://files.vagrantup.com'))
+      files = site.scan(/\w+\.+box/)
+      
+      wrap_output do
+        puts "Available boxes in the remote vagrant server: \n\n" 
+        files.each do |box|
+          Kernel.puts box + "\n(http://files.vagrantup.com/#{box})\n\n"
+        end
+      end
     end
 
     # Outputs the status of the current environment. This command outputs
