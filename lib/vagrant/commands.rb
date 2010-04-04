@@ -152,12 +152,13 @@ module Vagrant
     # List available remote base boxes 
     def box_remote(env)
       site = Net::HTTP.get(URI.parse('http://files.vagrantup.com'))
-      files = site.scan(/\w+\.+box/)
+      files = site.scan(/(contrib\/)*(\w+\.+box)/)
       
       wrap_output do
         puts "Available boxes in the remote vagrant server: \n\n" 
         files.each do |box|
-          Kernel.puts box + "\n(http://files.vagrantup.com/#{box})\n\n"
+          Kernel.puts box[1] + (box[0] ? " (contrib)\n" : "\n")
+          Kernel.puts "http://files.vagrantup.com/#{box[0]}#{box[1]}\n\n"
         end
       end
     end
